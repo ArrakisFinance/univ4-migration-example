@@ -1,0 +1,11 @@
+[[dependencies]]
+name = "forge-std"
+version = "1.9.6"
+git = "https://github.com/foundry-rs/forge-std.git"
+rev = "3b20d60d14b343ee4f908cb8079495c07f5e8981"
+
+[[dependencies]]
+name = "v4-periphery"
+version = "1.0.0"
+git = "https://github.com/Uniswap/v4-periphery.git"
+rev = "3779387e5d296f39df543d23524b050f89a62917"

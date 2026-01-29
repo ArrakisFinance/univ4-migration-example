@@ -1,0 +1,25 @@
+# Compiler files
+cache/
+out/
+
+# Soldeer dependencies
+dependencies/
+
+# Environment
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Broadcast files
+broadcast/
+
+# Docs
+docs/
+
+# Node
+node_modules/
