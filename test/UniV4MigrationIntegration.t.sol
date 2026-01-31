@@ -35,13 +35,17 @@ contract UniV4MigrationIntegrationTest is Test {
 
     // === UniV4 Migration Helper on Base ===
     address constant UNIV4_MIGRATION_HELPER =
-        0x30D0f4C5A1985667f5C9F848F1D496a537935750;
+        0xb4120Bf580C2c386D11435a30664ceA239E09c5c;
     address constant UNIV4_MIGRATION_OWNER =
         0x25CF23B54e25daaE3fe9989a74050b953A343823;
 
     // === Arrakis on Base ===
+    address constant ARRAKIS_FACTORY =
+        0x820FB8127a689327C863de8433278d6181123982;
     address constant UNIV4_PRIVATE_BEACON =
         0x97d42db1B71B1c9a811a73ce3505Ac00f9f6e5fB;
+    address constant BUNKER_MODULE_BEACON =
+        0x3025b46A9814a69EAf8699EDf905784Ee22C3ABB;
 
     IUniswapCCAMigrationHelper migrationHelper;
     uint256 positionTokenId;
@@ -194,16 +198,80 @@ contract UniV4MigrationIntegrationTest is Test {
         view
         returns (IUniswapCCAMigrationHelper.MigrationParams memory)
     {
+        // Precompute vault address using Create3
+        // The factory computes salt as: keccak256(abi.encode(msg.sender, salt_))
+        // where msg.sender is the migration helper (caller of deployPrivateVault)
+        bytes32 userSalt =
+            keccak256(abi.encode("test-migration"));
+        bytes32 factorySalt = keccak256(
+            abi.encode(address(migrationHelper), userSalt)
+        );
+        address precomputedVault =
+            _computeCreate3Address(ARRAKIS_FACTORY, factorySalt);
+
+        // Build Bunker module payload with precomputed vault address
+        IUniswapCCAMigrationHelper.ModuleToWhitelist[]
+            memory additionalModules =
+                new IUniswapCCAMigrationHelper.ModuleToWhitelist[](1);
+        additionalModules[0] = IUniswapCCAMigrationHelper
+            .ModuleToWhitelist({
+            beacon: BUNKER_MODULE_BEACON,
+            payload: abi.encodeWithSignature(
+                "initialize(address)", precomputedVault
+            )
+        });
+
         return IUniswapCCAMigrationHelper.MigrationParams({
             vaultCreation: IUniswapCCAMigrationHelper.VaultCreation({
-                salt: keccak256(abi.encode("test-migration", block.timestamp)),
+                salt: userSalt,
                 upgradeableBeacon: UNIV4_PRIVATE_BEACON,
                 maxDeviation: 200, // 2%
                 cooldownPeriod: 60, // 60 seconds
                 stratAnnouncer: address(0),
-                maxSlippage: 500 // 5%
+                maxSlippage: 500, // 5%
+                additionalModulesToWhitelist: additionalModules
             }),
             executor: user
         });
+    }
+
+    /// @notice Compute the Create3 deployed address for a given deployer and salt
+    function _computeCreate3Address(
+        address deployer,
+        bytes32 salt
+    ) internal pure returns (address) {
+        // Create3 proxy address via CREATE2
+        address proxy = address(
+            uint160(
+                uint256(
+                    keccak256(
+                        abi.encodePacked(
+                            bytes1(0xff),
+                            deployer,
+                            salt,
+                            keccak256(
+                                hex"67363d3d37363d34f03d5260086018f3"
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        // Final contract address via CREATE (nonce=1) from the proxy
+        return address(
+            uint160(
+                uint256(
+                    keccak256(
+                        abi.encodePacked(
+                            bytes1(0xd6),
+                            bytes1(0x94),
+                            proxy,
+                            bytes1(0x01)
+                        )
+                    )
+                )
+            )
+        );
     }
 }

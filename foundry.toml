@@ -20,6 +20,7 @@ exclude_lints = ["mixed-case-function"]
 
 [soldeer]
 remappings_generate = false
+recursive_deps = true
 
 [dependencies]
 forge-std = { version = "1.9.6", git = "https://github.com/foundry-rs/forge-std.git", tag = "v1.9.6" }
