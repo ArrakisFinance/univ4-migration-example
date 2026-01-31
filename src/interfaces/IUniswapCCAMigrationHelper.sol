@@ -6,6 +6,12 @@ import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
 interface IUniswapCCAMigrationHelper {
     // #region structs.
 
+    /// @notice One module to whitelist on the vault (beacon + init payload pair)
+    struct ModuleToWhitelist {
+        address beacon;
+        bytes payload;
+    }
+
     /// @notice Parameters for creating the new Arrakis vault
     struct VaultCreation {
         bytes32 salt;
@@ -14,6 +20,8 @@ interface IUniswapCCAMigrationHelper {
         uint256 cooldownPeriod;
         address stratAnnouncer;
         uint24 maxSlippage;
+        /// @notice Additional modules to whitelist on the vault (e.g. Bunker for future UniV4 Lending migration)
+        ModuleToWhitelist[] additionalModulesToWhitelist;
     }
 
     /// @notice Parameters for the migration

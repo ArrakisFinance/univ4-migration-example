@@ -15,7 +15,7 @@ git clone https://github.com/ArrakisFinance/univ4-migration-example
 cd univ4-migration-example
 
 # Install dependencies
-forge soldeer install --recursive-deps
+forge soldeer install
 
 # Copy environment file
 cp .env.example .env
@@ -48,11 +48,12 @@ forge test -vvv
 
 | Contract | Address |
 |----------|---------|
-| UniV4 Migration Helper | `0x30D0f4C5A1985667f5C9F848F1D496a537935750` |
+| UniV4 Migration Helper | `0xb4120Bf580C2c386D11435a30664ceA239E09c5c` |
 | Position Manager | `0x7C5f5A4bBd8fD63184577525326123B519429bDc` |
 | Pool Manager | `0x498581fF718922c3f8e6A244956aF099B2652b2b` |
 | Permit2 | `0x000000000022D473030F116dDEE9F6B43aC78BA3` |
 | UniV4 Private Beacon | `0x97d42db1B71B1c9a811a73ce3505Ac00f9f6e5fB` |
+| Bunker Module Beacon | `0x3025b46A9814a69EAf8699EDf905784Ee22C3ABB` |
 | WETH | `0x4200000000000000000000000000000000000006` |
 | USDC | `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` |
 
