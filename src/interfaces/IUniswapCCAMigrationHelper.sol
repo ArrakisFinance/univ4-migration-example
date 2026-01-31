@@ -116,9 +116,7 @@ interface IUniswapCCAMigrationHelper {
     /// @param expectedPoolId The expected pool ID
     /// @param actualPoolId The actual pool ID
     error PoolKeyMismatch(
-        uint256 tokenId,
-        bytes25 expectedPoolId,
-        bytes25 actualPoolId
+        uint256 tokenId, bytes25 expectedPoolId, bytes25 actualPoolId
     );
 
     /// @notice Error emitted when extracted tokens don't match pool currencies
@@ -127,10 +125,7 @@ interface IUniswapCCAMigrationHelper {
     /// @param currency0 The pool's currency0 address
     /// @param currency1 The pool's currency1 address
     error TokenMismatch(
-        address token0,
-        address token1,
-        address currency0,
-        address currency1
+        address token0, address token1, address currency0, address currency1
     );
 
     /// @notice Error emitted when a hook is not approved for migration
@@ -178,11 +173,15 @@ interface IUniswapCCAMigrationHelper {
 
     /// @notice Add a hook to the approved list
     /// @param hook_ The hook address to approve
-    function addApprovedHook(address hook_) external;
+    function addApprovedHook(
+        address hook_
+    ) external;
 
     /// @notice Remove a hook from the approved list
     /// @param hook_ The hook address to remove
-    function removeApprovedHook(address hook_) external;
+    function removeApprovedHook(
+        address hook_
+    ) external;
 
     // #endregion governance functions.
 }

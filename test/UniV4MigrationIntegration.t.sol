@@ -201,20 +201,17 @@ contract UniV4MigrationIntegrationTest is Test {
         // Precompute vault address using Create3
         // The factory computes salt as: keccak256(abi.encode(msg.sender, salt_))
         // where msg.sender is the migration helper (caller of deployPrivateVault)
-        bytes32 userSalt =
-            keccak256(abi.encode("test-migration"));
-        bytes32 factorySalt = keccak256(
-            abi.encode(address(migrationHelper), userSalt)
-        );
+        bytes32 userSalt = keccak256(abi.encode("test-migration"));
+        bytes32 factorySalt =
+            keccak256(abi.encode(address(migrationHelper), userSalt));
         address precomputedVault =
             _computeCreate3Address(ARRAKIS_FACTORY, factorySalt);
 
         // Build Bunker module payload with precomputed vault address
-        IUniswapCCAMigrationHelper.ModuleToWhitelist[]
-            memory additionalModules =
-                new IUniswapCCAMigrationHelper.ModuleToWhitelist[](1);
-        additionalModules[0] = IUniswapCCAMigrationHelper
-            .ModuleToWhitelist({
+        IUniswapCCAMigrationHelper.ModuleToWhitelist[] memory
+            additionalModules =
+            new IUniswapCCAMigrationHelper.ModuleToWhitelist[](1);
+        additionalModules[0] = IUniswapCCAMigrationHelper.ModuleToWhitelist({
             beacon: BUNKER_MODULE_BEACON,
             payload: abi.encodeWithSignature(
                 "initialize(address)", precomputedVault
@@ -249,9 +246,7 @@ contract UniV4MigrationIntegrationTest is Test {
                             bytes1(0xff),
                             deployer,
                             salt,
-                            keccak256(
-                                hex"67363d3d37363d34f03d5260086018f3"
-                            )
+                            keccak256(hex"67363d3d37363d34f03d5260086018f3")
                         )
                     )
                 )
@@ -264,10 +259,7 @@ contract UniV4MigrationIntegrationTest is Test {
                 uint256(
                     keccak256(
                         abi.encodePacked(
-                            bytes1(0xd6),
-                            bytes1(0x94),
-                            proxy,
-                            bytes1(0x01)
+                            bytes1(0xd6), bytes1(0x94), proxy, bytes1(0x01)
                         )
                     )
                 )
