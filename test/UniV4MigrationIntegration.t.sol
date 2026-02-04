@@ -203,8 +203,9 @@ contract UniV4MigrationIntegrationTest is Test {
         // where msg.sender is the migration helper (caller of deployPrivateVault)
         bytes32 userSalt = keccak256(abi.encode("test-migration"));
         bytes32 migrationHelperSalt = keccak256(abi.encode(user, userSalt));
-        bytes32 factorySalt =
-            keccak256(abi.encode(address(migrationHelper), migrationHelperSalt));
+        bytes32 factorySalt = keccak256(
+            abi.encode(address(migrationHelper), migrationHelperSalt)
+        );
         address precomputedVault =
             _computeCreate3Address(ARRAKIS_FACTORY, factorySalt);
 
