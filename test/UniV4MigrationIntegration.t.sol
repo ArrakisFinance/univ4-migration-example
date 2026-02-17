@@ -35,7 +35,7 @@ contract UniV4MigrationIntegrationTest is Test {
 
     // === UniV4 Migration Helper on Base ===
     address constant UNIV4_MIGRATION_HELPER =
-        0xdf038c4fb0bA71eDB5955D2bB4e12d7E47656eC5;
+        0x637636b295f5B76A38f983A3fD78EA5838a7B552;
     address constant UNIV4_MIGRATION_OWNER =
         0x25CF23B54e25daaE3fe9989a74050b953A343823;
 
